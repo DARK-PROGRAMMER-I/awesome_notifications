@@ -18,6 +18,7 @@ class WordState with ChangeNotifier{
         Iterable list = data;
           var listMap  = list.map((word) => Word.fromJson(word)).toList();
           words = listMap;
+          print(words);
           return listMap;
       }
 

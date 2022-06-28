@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<WordState>(context).fetch_data(1);
+    final provider = Provider.of<WordState>(context).fetch_data(4);
     return Scaffold(
       appBar: AppBar(
         title: Text('Translation App'),

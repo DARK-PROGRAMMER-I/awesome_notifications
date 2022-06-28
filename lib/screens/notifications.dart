@@ -12,7 +12,7 @@ Future<void> createPlantFoodNotification() async {
         notificationLayout: NotificationLayout.Default,
       ),
       schedule: NotificationInterval(
-          interval: 60,
+          interval: 61,
           timeZone: timezom,
           repeats: true)
   );
