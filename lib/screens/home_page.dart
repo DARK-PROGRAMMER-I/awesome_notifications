@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  StreamController<Word> _streamController = StreamController();
+  StreamController<List<Word>> _streamController = StreamController();
 
 
   void initState() {
@@ -98,21 +98,26 @@ class _HomePageState extends State<HomePage> {
       if(response.statusCode  == 200){
         final databody = json.decode(response.body)['Word'];
         print('Success');
-
         databody.forEach((element){
           Provider.of<WordState>(context, listen: false).getWord(Word.fromJson(element));
         });
+        getStreamWord(databody);
+        print('HERE WE ARWE');
       }
     }catch(e){
       print(e);
       print('fatal Error');
     }
+
   }
-  getStreamWord(Word word)async{
+  getStreamWord(List<Word> word)async{
     print(word.toString() + 'Error here');
+    print(word);
+    print('GET STREAM WORD');
     _streamController.sink.add(word);
 
   }
+
 
   @override
   void dispose() {
@@ -125,20 +130,36 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider1 = Provider.of<WordState>(context).words;
+    // final provider1 = Provider.of<WordState>(context).words;
     return Scaffold(
       appBar: AppBar(
         title: Text('Translation App'),
       ),
-      body:  listTile(provider1, context),
+      body:  StreamBuilder(
+          stream: _streamController.stream,
+          builder: (context, snap){
+             if(snap.hasData){
+               print(snap.data);
+               print('Has DATA');
+                 return listTile(context);
+               }
+             if(snap.hasError){
+                 print('ERROR SNAP');
+                 return CircularProgressIndicator();
+              }else{
+               return CircularProgressIndicator();
+             }
+
+            }
 
 
-    );
+      ));
   }
 }
 
-Widget listTile(List<Word> provider1, BuildContext context){
-  print(provider1.length.toString() + 'new Lengthj');
+Widget listTile( BuildContext context){
+  final provider1 = Provider.of<WordState>(context).words;
+  // print(provider1.length.toString() + 'new Lengthj');
   return provider1.length == 0 || provider1.length == null ? Center(child: CircularProgressIndicator(),):
   ListView.builder(
       itemCount: provider1.length,
