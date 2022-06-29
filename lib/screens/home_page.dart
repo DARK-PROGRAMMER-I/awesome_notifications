@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -86,7 +87,7 @@ class _HomePageState extends State<HomePage> {
       );
     });
     Timer.periodic(Duration(seconds: 3), (timer) {
-      streamUser.getWord('hola');
+      getWord('hola');
     });
 
   }
@@ -153,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                 default: if(snapshot.hasError){
                   return Text('Please Wait....');
                 }else{
-                  return listTile(snapshot.data!);
+                  return listTile(snapshot.data!, context);
                 }
               }
             },
@@ -165,25 +166,8 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget listTile(Word word){
-  print(word);
-  return ListView(
-    children: [
-      Center(child: Text(word.eng.toString()),)
-    ],
-  );
+Widget listTile(Word word, BuildContext context){
+  final provider= Provider.of(context);
+  return Center(child: Text(word.eng.toString()),);
 }
 
-
-//Column(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 ElevatedButton(onPressed: (){
-//                   createPlantFoodNotification;
-//                 }, child: Text('Start Notifications'))
-//                 ,ElevatedButton(onPressed:(){
-//                   // Function for canceling all notifications
-//                   cancelScheduledNotifications;
-//                 }, child: Text('Cancel Notifications'))
-//               ],
-//             ),
