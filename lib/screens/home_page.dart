@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:awesome_notification/model/translation.dart';
 import 'package:awesome_notification/screens/navigaton_page.dart';
+import 'package:awesome_notification/state/trans_state.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -77,7 +78,6 @@ class _HomePageState extends State<HomePage> {
               AwesomeNotifications().setGlobalBadgeCounter(value - 1),
         );
       }
-
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
@@ -89,15 +89,10 @@ class _HomePageState extends State<HomePage> {
     Timer.periodic(Duration(seconds: 3), (timer) {
       getWord('hola');
     });
-
   }
   Future<void> getWord(String imei) async{
-
     var url = Uri.parse('https://ihfath.herokuapp.com/api/v1/Getword/${imei}');
-
     final response = await http.get(url);
-
-
     try{
       if(response.statusCode  == 200){
         final databody = json.decode(response.body)['Word'].first;
@@ -105,27 +100,13 @@ class _HomePageState extends State<HomePage> {
         // print(databody);
         // var data = jsonDecode(response.body)['Word'] as List;
         Word dataModel = new Word.fromJson(databody);
-        // data.forEach((element) {
-        //   print(element);
-        //   words.add(element);
-        // });
-        // add API response to stream controller sink
-        // print(dataModel);
         _streamController.sink.add(dataModel);
-
       }
-
-
     }catch(e){
       print(e);
       print('fatal Error');
-
     }
-
-
   }
-
-
 
   @override
   void dispose() {
@@ -135,7 +116,6 @@ class _HomePageState extends State<HomePage> {
     _streamController.close();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +147,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget listTile(Word word, BuildContext context){
-  final provider= Provider.of(context);
+  final provider= Provider.of<WordState>(context).getWord(word);
   return Center(child: Text(word.eng.toString()),);
 }
 
