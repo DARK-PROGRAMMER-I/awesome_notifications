@@ -86,28 +86,36 @@ class _HomePageState extends State<HomePage> {
             (route) => route.isFirst,
       );
     });
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    Timer.periodic(Duration(seconds: 4), (timer) {
       getWord('1');
     });
   }
   Future<void> getWord(String imei) async{
     var url = Uri.parse('https://ihfath.herokuapp.com/api/v1/Getword/${imei}');
     final response = await http.get(url);
+    List words = [];
     try{
+
       if(response.statusCode  == 200){
         final databody = json.decode(response.body)['Word'];
         print('Success');
-        // print(databody);
-        // var data = jsonDecode(response.body)['Word'] as List;
+
         databody.forEach((element){
-          print(Word.fromJson(element).eng);
-          _streamController.sink.add(Word.fromJson(element));
+
+          getStreamWord(element);
         });
+
       }
+
     }catch(e){
       print(e);
       print('fatal Error');
     }
+  }
+  getStreamWord(Word word)async{
+    print(word);
+    _streamController.sink.add(word);
+
   }
 
   @override
@@ -126,25 +134,22 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Translation App'),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: StreamBuilder<Word>(
-            stream: _streamController.stream,
-            builder:(context, snapshot){
-              print(snapshot.hasData);
-              switch(snapshot.connectionState){
-                case ConnectionState.waiting: return Center(child: CircularProgressIndicator(),);
-                default: if(snapshot.hasError){
-                  return Text('Please Wait....');
-                }else{
-                  return listTile(snapshot.data!, context);
-                }
+      body: StreamBuilder<Word>(
+          stream: _streamController.stream,
+          builder:(context, snapshot){
+            print(snapshot.hasData);
+            switch(snapshot.connectionState){
+              case ConnectionState.waiting: return Center(child: CircularProgressIndicator(),);
+              default: if(snapshot.hasError){
+                return Text('Please Wait....');
+              }else{
+                return listTile(snapshot.data!, context);
               }
-            },
+            }
+          },
 
-          ),
         ),
-      ),
+
     );
   }
 }
@@ -153,7 +158,7 @@ Widget listTile(Word word, BuildContext context){
   Provider.of<WordState>(context).getWord(word);
   final provider1 = Provider.of<WordState>(context).words;
   // print(provider1);
-  return provider1.length == 0? Center(child: CircularProgressIndicator(),):
+  return provider1.length == 0 || provider1.length == null ? Center(child: CircularProgressIndicator(),):
   ListView.builder(
       itemCount: provider1.length,
       itemBuilder: (context, index){

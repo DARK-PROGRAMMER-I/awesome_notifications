@@ -7,6 +7,7 @@ class WordState with ChangeNotifier{
   List<Word> words = [];
 
   getWord (Word word){
+    print(word.arb.toString() + word.eng.toString());
     words.add((word));
   }
 }//type 'List<dynamic>' is not a subtype of type 'Map<String, dynamic>'
