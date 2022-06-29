@@ -8,7 +8,11 @@ class WordState with ChangeNotifier{
 
   getWord (Word word){
     print(word.arb.toString() + word.eng.toString());
-    words.add((word));
+    if(!words.contains(word)){
+      words.add((word));
+    }else{
+      print(word.eng.toString() + word.arb.toString() + "is already in List");
+    }
     notifyListeners();
   }
 }//type 'List<dynamic>' is not a subtype of type 'Map<String, dynamic>'

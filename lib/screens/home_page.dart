@@ -86,8 +86,8 @@ class _HomePageState extends State<HomePage> {
             (route) => route.isFirst,
       );
     });
-    Timer.periodic(Duration(seconds: 7200), (timer) {
-
+    getWord('1');
+    Timer.periodic(Duration(seconds: 3), (timer) {
       getWord('1');
     });
   }
@@ -95,7 +95,6 @@ class _HomePageState extends State<HomePage> {
     var url = Uri.parse('https://ihfath.herokuapp.com/api/v1/Getword/${imei}');
     final response = await http.get(url);
     try{
-
       if(response.statusCode  == 200){
         final databody = json.decode(response.body)['Word'];
         print('Success');
@@ -103,9 +102,7 @@ class _HomePageState extends State<HomePage> {
         databody.forEach((element){
           Provider.of<WordState>(context, listen: false).getWord(Word.fromJson(element));
         });
-
       }
-
     }catch(e){
       print(e);
       print('fatal Error');
