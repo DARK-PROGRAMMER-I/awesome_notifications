@@ -19,8 +19,9 @@ class WordState with ChangeNotifier{
     //   print('Already present');
     // }
 
-    print(words.contains(word));
+    print(word);
     words.add(word);
+    print(words.length);
     // if(words.contains(word)){
     //   words.add(word);
     //   notifyListeners();

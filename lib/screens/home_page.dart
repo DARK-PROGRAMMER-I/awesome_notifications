@@ -100,15 +100,7 @@ class _HomePageState extends State<HomePage> {
         print('Success');
 
         databody.forEach((element){
-          // Provider.of<WordState>(context, listen: false).getWord(Word.fromJson(element));
-          final words = Provider.of<WordState>(context, listen: false).words;
-          if(!words.contains(Word.fromJson(element))){
-            Provider.of<WordState>(context, listen: false).getWord(Word.fromJson(element));
-          }else{
-            print('Already in list');
-          }
-
-
+          Provider.of<WordState>(context, listen: false).getWord(Word.fromJson(element));
         });
       }
     }catch(e){
@@ -146,7 +138,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget listTile(List<Word> provider1, BuildContext context){
-
+  print(provider1.length.toString() + 'new Lengthj');
   return provider1.length == 0 || provider1.length == null ? Center(child: CircularProgressIndicator(),):
   ListView.builder(
       itemCount: provider1.length,
