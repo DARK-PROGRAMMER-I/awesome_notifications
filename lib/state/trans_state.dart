@@ -7,12 +7,25 @@ class WordState with ChangeNotifier{
   List<Word> words = [];
 
   getWord (Word word){
-    print(word.arb.toString() + word.eng.toString());
-    if(!words.contains(word)){
-      words.add((word));
-    }else{
-      print(word.eng.toString() + word.arb.toString() + "is already in List");
-    }
-    notifyListeners();
+    //
+    // if(words.length > 0 && words.length != 0){
+    //   words.forEach((element)  {
+    //     element == word;
+    //     words.add(word);
+    //     notifyListeners();
+    //   });
+    // }else{
+    //   words.add(word);
+    //   print('Already present');
+    // }
+
+    print(words.contains(word));
+    words.add(word);
+    // if(words.contains(word)){
+    //   words.add(word);
+    //   notifyListeners();
+    // }else{
+    //   print(word.eng.toString() + word.arb.toString() + "is already in List");
+    // }
   }
 }//type 'List<dynamic>' is not a subtype of type 'Map<String, dynamic>'

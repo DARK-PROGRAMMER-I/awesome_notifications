@@ -100,7 +100,15 @@ class _HomePageState extends State<HomePage> {
         print('Success');
 
         databody.forEach((element){
-          Provider.of<WordState>(context, listen: false).getWord(Word.fromJson(element));
+          // Provider.of<WordState>(context, listen: false).getWord(Word.fromJson(element));
+          final words = Provider.of<WordState>(context, listen: false).words;
+          if(!words.contains(Word.fromJson(element))){
+            Provider.of<WordState>(context, listen: false).getWord(Word.fromJson(element));
+          }else{
+            print('Already in list');
+          }
+
+
         });
       }
     }catch(e){
