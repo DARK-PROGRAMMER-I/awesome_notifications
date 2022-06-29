@@ -18,10 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Timer? timer;
-  // Timer? timer1;
-  // int i= 1;
-
   void initState() {
     super.initState();
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {

@@ -2,7 +2,7 @@ import 'package:awesome_notification/model/translation.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPage extends StatefulWidget {
-  Word word;
+
   NavigationPage({Key? key,}) : super(key: key);
 
   @override
