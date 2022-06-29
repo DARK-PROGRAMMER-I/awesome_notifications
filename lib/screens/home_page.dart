@@ -150,13 +150,17 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget listTile(Word word, BuildContext context){
-  List<Word> words = [];
-  words.add(word);
-  final provider1 = Provider.of<WordState>(context).words;
   Provider.of<WordState>(context).getWord(word);
-  if(provider1 == words){
-    print('Same');
-  }
-  return Center(child: Text(word.eng.toString() + word.arb.toString()),);
+  final provider1 = Provider.of<WordState>(context).words;
+  // print(provider1);
+  return provider1.length == 0? Center(child: CircularProgressIndicator(),):
+  ListView.builder(
+      itemCount: provider1.length,
+      itemBuilder: (context, index){
+      return ListTile(
+        leading: Text(provider1[index].eng.toString()),
+        trailing: Text(provider1[index].arb.toString()),
+      );
+  });
 }
 
