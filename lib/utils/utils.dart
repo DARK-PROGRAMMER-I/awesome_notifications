@@ -4,7 +4,12 @@ int createUniqueId() {
   return DateTime.now().millisecondsSinceEpoch.remainder(100000);
 }
 
-List items(){
+Future<String> items(){
   var  itemList = ['1','2','3','4','5','6','7', ];
-  return itemList;
+  var word= Future.delayed(Duration(seconds: 60), () {
+    itemList.removeAt(0);
+    return itemList.first;
+  });
+  return word;
 }
+

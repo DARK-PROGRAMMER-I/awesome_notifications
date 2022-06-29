@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:awesome_notification/model/translation.dart';
 import 'package:awesome_notification/screens/navigaton_page.dart';
 import 'package:awesome_notification/state/trans_state.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -16,6 +18,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Timer? timer;
+  // Timer? timer1;
+  // int i= 1;
+
   void initState() {
     super.initState();
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
@@ -80,39 +86,70 @@ class _HomePageState extends State<HomePage> {
             (route) => route.isFirst,
       );
     });
+
   }
+  StreamController<Word> _streamController = StreamController();
 
   @override
   void dispose() {
     AwesomeNotifications().actionSink.close();
     AwesomeNotifications().createdSink.close();
+    // stop streaming when app close
+    _streamController.close();
     super.dispose();
   }
 
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<WordState>(context).fetch_data(4);
+
+    // final provider1 = Provider.of<WordState>(context).fetch_data(4);
+    // final provider2 = Provider.of<WordState>(context);
+    // print(provider2.words);
     return Scaffold(
       appBar: AppBar(
         title: Text('Translation App'),
       ),
       body: SingleChildScrollView(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(onPressed: (){
-                createPlantFoodNotification;
-              }, child: Text('Start Notifications'))
-              ,ElevatedButton(onPressed:(){
-                // Function for canceling all notifications
-                cancelScheduledNotifications;
-              }, child: Text('Cancel Notifications'))
-            ],
+          child: StreamBuilder<Word>(
+            stream: _streamController.stream,
+            builder:(context, snapshot){
+              switch(snapshot.connectionState){
+                case ConnectionState.waiting: return Center(child: CircularProgressIndicator(),);
+                default: if(snapshot.hasError){
+                  return Text('Please Wait....');
+                }else{
+                  return listTile(snapshot.data!);
+                }
+              }
+            },
+
           ),
         ),
       ),
     );
   }
 }
+
+Widget listTile(Word word){
+  return ListView(
+    children: [
+      Center(child: Text(word.eng.toString()),)
+    ],
+  );
+}
+
+
+//Column(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 ElevatedButton(onPressed: (){
+//                   createPlantFoodNotification;
+//                 }, child: Text('Start Notifications'))
+//                 ,ElevatedButton(onPressed:(){
+//                   // Function for canceling all notifications
+//                   cancelScheduledNotifications;
+//                 }, child: Text('Cancel Notifications'))
+//               ],
+//             ),

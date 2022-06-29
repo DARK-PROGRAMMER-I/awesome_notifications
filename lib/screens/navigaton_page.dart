@@ -1,7 +1,9 @@
+import 'package:awesome_notification/model/translation.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPage extends StatefulWidget {
-  const NavigationPage({Key? key}) : super(key: key);
+  Word word;
+  NavigationPage({Key? key,}) : super(key: key);
 
   @override
   State<NavigationPage> createState() => _NavigationPageState();
@@ -10,6 +12,8 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Center(
+
+    );
   }
 }

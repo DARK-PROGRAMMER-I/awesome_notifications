@@ -7,12 +7,15 @@ Future<void> createPlantFoodNotification() async {
       content: NotificationContent(
         id: createUniqueId(),
         channelKey: 'basic_channel',
-        title: 'Title Here', // ${items.call().first}
+        title:
+        'Buy Plant Food!!!',
         body: 'Florist at 123 Main St. has 2 in stock',
-        notificationLayout: NotificationLayout.Default,
+        bigPicture: 'asset://assets/notification_map.png',
+        notificationLayout: NotificationLayout.BigPicture,
       ),
       schedule: NotificationInterval(
-          interval: 61,
+          interval: 60,
+          // allowWhileIdle: true,
           timeZone: timezom,
           repeats: true)
   );

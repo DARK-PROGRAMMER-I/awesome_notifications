@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 class WordState with ChangeNotifier{
   List words = [];
   Future<List<Word>?> fetch_data(int imei)async{
+    print(imei);
     String url = 'https://ihfath.herokuapp.com/api/v1/Getword/${imei}';
     try{
       // Get response from Api
@@ -15,12 +16,14 @@ class WordState with ChangeNotifier{
           print('Success');
           var data = jsonDecode(response.body)['Word'] as List;
 
-        Iterable list = data;
-          var listMap  = list.map((word) => Word.fromJson(word)).toList();
-          words = listMap;
-          print(words);
-          return listMap;
+          data.forEach((element) {
+            print(element);
+            words.add(element);
+          });
+
+          return [];
       }
+
 
     }catch(e){
       print(e);

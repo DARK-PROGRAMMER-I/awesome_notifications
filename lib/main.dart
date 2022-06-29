@@ -7,6 +7,7 @@ import 'screens/home_page.dart';
 
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   AwesomeNotifications().initialize(
       null,
       [
