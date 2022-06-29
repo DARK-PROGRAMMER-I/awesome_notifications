@@ -86,8 +86,8 @@ class _HomePageState extends State<HomePage> {
             (route) => route.isFirst,
       );
     });
-    Timer.periodic(Duration(seconds: 3), (timer) {
-      getWord('hola');
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      getWord('1');
     });
   }
   Future<void> getWord(String imei) async{
@@ -95,12 +95,14 @@ class _HomePageState extends State<HomePage> {
     final response = await http.get(url);
     try{
       if(response.statusCode  == 200){
-        final databody = json.decode(response.body)['Word'].first;
+        final databody = json.decode(response.body)['Word'];
         print('Success');
         // print(databody);
         // var data = jsonDecode(response.body)['Word'] as List;
-        Word dataModel = new Word.fromJson(databody);
-        _streamController.sink.add(dataModel);
+        databody.forEach((element){
+          print(Word.fromJson(element).eng);
+          _streamController.sink.add(Word.fromJson(element));
+        });
       }
     }catch(e){
       print(e);
@@ -113,7 +115,7 @@ class _HomePageState extends State<HomePage> {
     AwesomeNotifications().actionSink.close();
     AwesomeNotifications().createdSink.close();
     // stop streaming when app close
-    _streamController.close();
+    // _streamController.close();
     super.dispose();
   }
 
@@ -129,6 +131,7 @@ class _HomePageState extends State<HomePage> {
           child: StreamBuilder<Word>(
             stream: _streamController.stream,
             builder:(context, snapshot){
+              print(snapshot.hasData);
               switch(snapshot.connectionState){
                 case ConnectionState.waiting: return Center(child: CircularProgressIndicator(),);
                 default: if(snapshot.hasError){
@@ -147,7 +150,13 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget listTile(Word word, BuildContext context){
-  final provider= Provider.of<WordState>(context).getWord(word);
-  return Center(child: Text(word.eng.toString()),);
+  List<Word> words = [];
+  words.add(word);
+  final provider1 = Provider.of<WordState>(context).words;
+  Provider.of<WordState>(context).getWord(word);
+  if(provider1 == words){
+    print('Same');
+  }
+  return Center(child: Text(word.eng.toString() + word.arb.toString()),);
 }
 
