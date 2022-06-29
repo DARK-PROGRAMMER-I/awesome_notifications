@@ -86,7 +86,8 @@ class _HomePageState extends State<HomePage> {
             (route) => route.isFirst,
       );
     });
-    Timer.periodic(Duration(seconds: 4), (timer) {
+    Timer.periodic(Duration(seconds: 7200), (timer) {
+
       getWord('1');
     });
   }
@@ -127,35 +128,20 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
+    final provider1 = Provider.of<WordState>(context).words;
     return Scaffold(
       appBar: AppBar(
         title: Text('Translation App'),
       ),
-      body: StreamBuilder<Word>(
-          stream: _streamController.stream,
-          builder:(context, snapshot){
-            print(snapshot.hasData);
-            switch(snapshot.connectionState){
-              case ConnectionState.waiting: return Center(child: CircularProgressIndicator(),);
-              default: if(snapshot.hasError){
-                return Text('Please Wait....');
-              }else{
-                return listTile(snapshot.data!, context);
-              }
-            }
-          },
+      body:  listTile(provider1, context),
 
-        ),
 
     );
   }
 }
 
-Widget listTile(Word word, BuildContext context){
-  Provider.of<WordState>(context).getWord(word);
-  final provider1 = Provider.of<WordState>(context).words;
-  // print(provider1);
+Widget listTile(List<Word> provider1, BuildContext context){
+
   return provider1.length == 0 || provider1.length == null ? Center(child: CircularProgressIndicator(),):
   ListView.builder(
       itemCount: provider1.length,
