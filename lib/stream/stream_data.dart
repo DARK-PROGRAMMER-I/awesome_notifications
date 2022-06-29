@@ -15,7 +15,8 @@ class StreamUser {
     try{
       if(response.statusCode  == 200){
         final databody = json.decode(response.body)['Word'].first;
-        // print('Success');
+        print('Success');
+        // print(databody);
         // var data = jsonDecode(response.body)['Word'] as List;
         Word dataModel = new Word.fromJson(databody);
         // data.forEach((element) {
@@ -23,6 +24,7 @@ class StreamUser {
         //   words.add(element);
         // });
         // add API response to stream controller sink
+        // print(dataModel);
         _streamController.sink.add(dataModel);
 
       }

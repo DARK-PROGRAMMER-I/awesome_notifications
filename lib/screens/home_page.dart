@@ -1,15 +1,12 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:awesome_notification/model/translation.dart';
 import 'package:awesome_notification/screens/navigaton_page.dart';
-import 'package:awesome_notification/state/trans_state.dart';
-import 'package:awesome_notification/stream/stream_data.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'notifications.dart';
+import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,12 +17,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  StreamUser streamUser= StreamUser();
+  StreamController<Word> _streamController = StreamController();
 
 
   void initState() {
     super.initState();
-    streamUser.getWord('hola');
+
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
         showDialog(
@@ -88,9 +85,46 @@ class _HomePageState extends State<HomePage> {
             (route) => route.isFirst,
       );
     });
+    Timer.periodic(Duration(seconds: 3), (timer) {
+      streamUser.getWord('hola');
+    });
 
   }
-  StreamController<Word> _streamController = StreamController();
+  Future<void> getWord(String imei) async{
+
+    var url = Uri.parse('https://ihfath.herokuapp.com/api/v1/Getword/${imei}');
+
+    final response = await http.get(url);
+
+
+    try{
+      if(response.statusCode  == 200){
+        final databody = json.decode(response.body)['Word'].first;
+        print('Success');
+        // print(databody);
+        // var data = jsonDecode(response.body)['Word'] as List;
+        Word dataModel = new Word.fromJson(databody);
+        // data.forEach((element) {
+        //   print(element);
+        //   words.add(element);
+        // });
+        // add API response to stream controller sink
+        // print(dataModel);
+        _streamController.sink.add(dataModel);
+
+      }
+
+
+    }catch(e){
+      print(e);
+      print('fatal Error');
+
+    }
+
+
+  }
+
+
 
   @override
   void dispose() {
@@ -105,9 +139,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    // final provider1 = Provider.of<WordState>(context).fetch_data(4);
-    // final provider2 = Provider.of<WordState>(context);
-    // print(provider2.words);
     return Scaffold(
       appBar: AppBar(
         title: Text('Translation App'),
@@ -135,6 +166,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget listTile(Word word){
+  print(word);
   return ListView(
     children: [
       Center(child: Text(word.eng.toString()),)
