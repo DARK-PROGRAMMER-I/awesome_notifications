@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:awesome_notification/model/translation.dart';
 import 'package:awesome_notification/screens/navigaton_page.dart';
 import 'package:awesome_notification/state/trans_state.dart';
+import 'package:awesome_notification/stream/stream_data.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,8 +19,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  StreamUser streamUser= StreamUser();
+
+
   void initState() {
     super.initState();
+    streamUser.getWord('hola');
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
         showDialog(
