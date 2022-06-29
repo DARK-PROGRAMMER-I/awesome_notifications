@@ -93,7 +93,6 @@ class _HomePageState extends State<HomePage> {
   Future<void> getWord(String imei) async{
     var url = Uri.parse('https://ihfath.herokuapp.com/api/v1/Getword/${imei}');
     final response = await http.get(url);
-    List words = [];
     try{
 
       if(response.statusCode  == 200){
@@ -101,8 +100,7 @@ class _HomePageState extends State<HomePage> {
         print('Success');
 
         databody.forEach((element){
-
-          getStreamWord(element);
+          Provider.of<WordState>(context, listen: false).getWord(Word.fromJson(element));
         });
 
       }
@@ -113,7 +111,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
   getStreamWord(Word word)async{
-    print(word);
+    print(word.toString() + 'Error here');
     _streamController.sink.add(word);
 
   }
