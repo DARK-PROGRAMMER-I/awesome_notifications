@@ -20,7 +20,7 @@ Future<void> createWordNotification(String eng,String arb) async {
       schedule: NotificationCalendar(
       repeats: false,
       timeZone: timezom,
-      millisecond: 30
+      millisecond: 20
   )
   );
 }

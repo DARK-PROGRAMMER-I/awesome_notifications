@@ -38,14 +38,15 @@ class WordState with ChangeNotifier{
         print(word);
         engWords.add(word.eng);
         arbWords.add(word.arb);
-        dates.add(word.date);
         createWordNotification(word.eng.toString(), word.arb.toString());
+        dates.add(word.date);
         // here im getting error
       }
     }else{
       engWords.add(word.eng);
       arbWords.add(word.arb);
       dates.add(word.date);
+      createWordNotification(word.eng.toString(), word.arb.toString());
     }
 
 // Continue from here
