@@ -16,6 +16,11 @@ class WordState with ChangeNotifier{
     createWordNotification(eng, arb);
 
   }
+  List<String >getLastElement(){
+    String eng = engWords[engWords.length -1].toString();
+    String arb = arbWords[arbWords.length -1].toString();
+    return [eng, arb];
+  }
 
   getWord (Word word){
     if(engWords.isNotEmpty){
@@ -24,7 +29,6 @@ class WordState with ChangeNotifier{
         arbWords.add(word.arb);
         dates.add(word.date);
         // here im getting error
-        getNotified(engWords[engWords.length -1 ].toString(), arbWords[arbWords.length -1].toString());
       }
     }else{
       engWords.add(word.eng);
@@ -32,5 +36,6 @@ class WordState with ChangeNotifier{
       dates.add(word.date);
     }
 
+// Continue from here
   }
 }
