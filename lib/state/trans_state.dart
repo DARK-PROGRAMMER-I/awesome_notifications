@@ -18,10 +18,12 @@ class WordState with ChangeNotifier{
         if(words[i] != word){
           print('Inner Loop');
           words.add(word);
-          streamController.sink.add(word);
         }
       }
       print(word);
+    }else{
+      print('inside else statement');
+      words.add(word);
     }
 
     print(words.length);
