@@ -64,11 +64,7 @@ class _HomePageState extends State<HomePage> {
     });
 
     AwesomeNotifications().createdStream.listen((notification) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          'Notification Created on ${notification.channelKey}',
-        ),
-      ));
+      print('Notification Created on ${notification.channelKey}');
     });
 
     AwesomeNotifications().actionStream.listen((notification) {
@@ -86,11 +82,17 @@ class _HomePageState extends State<HomePage> {
             (route) => route.isFirst,
       );
     });
+
+
     getWord('hola');
-    Timer.periodic(Duration(seconds: 7200), (timer) {
+    Timer.periodic(Duration(seconds: 3600), (timer) {
       getWord('hola');
     });
+
+
   }
+
+
   Future<void> getWord(String imei) async{
     var url = Uri.parse('https://ihfath.herokuapp.com/api/v1/Getword/${imei}');
     final response = await http.get(url);
@@ -135,16 +137,14 @@ class _HomePageState extends State<HomePage> {
         title: Text('Translation App'),
         leading: IconButton(
             onPressed: () async {
-
-              // if(engProv.length != 0 && engProv.length != null){
-              //   print();
-              //   provider.getNotified(engProv[engProv.length-1].toString(), arbProv.last.toString());
-              // }else{
-              //   print('Empty List');
-              // }
-
+              createWordNotification(engProv.last.toString(), arbProv.last.toString());
             },
             icon: Icon(Icons.notifications_active_rounded)),
+        actions: [
+          IconButton(onPressed: ()async{
+            cancelScheduledNotifications();
+          }, icon: Icon(Icons.notifications_off)),
+        ],
       ),
       body:  StreamBuilder(
           stream: streamController.stream,
