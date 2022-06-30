@@ -9,6 +9,8 @@ class WordState with ChangeNotifier{
   List<Word> words = [];
 
   getWord (Word word){
+    print('Inside Trans State Function');
+    print(word);
     if(words.isNotEmpty){
       for(int i = 0; i<= words.length; i++ ){
         print(words[i] == word);

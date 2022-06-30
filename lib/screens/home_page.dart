@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:awesome_notification/model/translation.dart';
 import 'package:awesome_notification/screens/navigaton_page.dart';
 import 'package:awesome_notification/state/trans_state.dart';
-import 'package:awesome_notification/state/trans_state.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -94,14 +93,15 @@ class _HomePageState extends State<HomePage> {
   Future<void> getWord(String imei) async{
     var url = Uri.parse('https://ihfath.herokuapp.com/api/v1/Getword/${imei}');
     final response = await http.get(url);
+    Word? word;
     try{
       if(response.statusCode  == 200){
         final databody = json.decode(response.body)['Word'];
         print('Success');
         databody.forEach((element){
-          Provider.of<WordState>(context, listen: false).getWord(Word.fromJson(element));
+          word = Word.fromJson(element);
         });
-        getStreamWord(databody);
+        getStreamWord(word!);
         print('HERE WE ARWE');
       }
     }catch(e){
@@ -112,7 +112,6 @@ class _HomePageState extends State<HomePage> {
   }
   getStreamWord(Word word)async{
     print(word.toString() + 'Error here');
-    print(word);
     print('GET STREAM WORD');
     streamController.sink.add(word);
 
@@ -141,7 +140,7 @@ class _HomePageState extends State<HomePage> {
              if(snap.hasData){
                print(snap.data);
                print('Has DATA');
-                 return listTile(context);
+                 return listTile(snap.data,context);
                }
              if(snap.hasError){
                  print('ERROR SNAP');
@@ -157,9 +156,10 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget listTile( BuildContext context){
+Widget listTile(var word, BuildContext context){
+  Provider.of<WordState>(context, listen: false).getWord(word);
   final provider1 = Provider.of<WordState>(context).words;
-  // print(provider1.length.toString() + 'new Lengthj');
+  print(provider1.length);
   return provider1.length == 0 || provider1.length == null ? Center(child: CircularProgressIndicator(),):
   ListView.builder(
       itemCount: provider1.length,
