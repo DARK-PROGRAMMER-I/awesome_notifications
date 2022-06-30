@@ -23,6 +23,7 @@ class WordState with ChangeNotifier{
         engWords.add(word.eng);
         arbWords.add(word.arb);
         dates.add(word.date);
+        // here im getting error
         getNotified(engWords[engWords.length -1 ].toString(), arbWords[arbWords.length -1].toString());
       }
     }else{
