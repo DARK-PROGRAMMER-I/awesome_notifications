@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:awesome_notification/state/trans_state.dart';
 import 'package:awesome_notification/utils/utils.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -30,8 +32,8 @@ Future<void> createBasicNotification(String eng, String arb) async {
         id: createUniqueId(),
         channelKey: 'basic_channel',
         title:
-        ' Buy Plant Food!!!',
-        body: 'Florist at 123 Main St. has 2 in stock',
+        '$eng',
+        body: '$arb',
       ),
 
 
