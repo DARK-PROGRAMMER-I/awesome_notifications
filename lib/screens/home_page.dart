@@ -93,16 +93,13 @@ class _HomePageState extends State<HomePage> {
   Future<void> getWord(String imei) async{
     var url = Uri.parse('https://ihfath.herokuapp.com/api/v1/Getword/${imei}');
     final response = await http.get(url);
-    Word? word;
     try{
       if(response.statusCode  == 200){
         final databody = json.decode(response.body)['Word'];
         print('Success');
         databody.forEach((element){
-          word = Word.fromJson(element);
+          getStreamWord(Word.fromJson(element));
         });
-        getStreamWord(word!);
-        print('HERE WE ARWE');
       }
     }catch(e){
       print(e);
@@ -111,6 +108,7 @@ class _HomePageState extends State<HomePage> {
 
   }
   getStreamWord(Word word)async{
+    Provider.of<WordState>(context, listen: false).getWord(word);
     print(word.toString() + 'Error here');
     print('GET STREAM WORD');
     streamController.sink.add(word);
@@ -129,7 +127,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final provider1 = Provider.of<WordState>(context).words;
     return Scaffold(
       appBar: AppBar(
         title: Text('Translation App'),
@@ -138,8 +135,8 @@ class _HomePageState extends State<HomePage> {
           stream: streamController.stream,
           builder: (context, snap){
              if(snap.hasData){
-               print(snap.data);
-               print('Has DATA');
+               // print(snap.data);
+               // print('Has DATA');
                  return listTile(snap.data,context);
                }
              if(snap.hasError){
@@ -157,16 +154,19 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget listTile(var word, BuildContext context){
-  Provider.of<WordState>(context, listen: false).getWord(word);
-  final provider1 = Provider.of<WordState>(context).words;
-  print(provider1.length);
-  return provider1.length == 0 || provider1.length == null ? Center(child: CircularProgressIndicator(),):
+
+  final engProvider = Provider.of<WordState>(context).engWords;
+  final arbProvider = Provider.of<WordState>(context).arbWords;
+  final dateProvider = Provider.of<WordState>(context).dates;
+
+  return engProvider.length == 0 || engProvider.length == null ? Center(child: CircularProgressIndicator(),):
   ListView.builder(
-      itemCount: provider1.length,
+      itemCount: engProvider.length,
       itemBuilder: (context, index){
       return ListTile(
-        leading: Text(provider1[index].eng.toString()),
-        trailing: Text(provider1[index].arb.toString()),
+        title: Text(dateProvider[index].toString()),
+        leading: Text(engProvider[index].toString()),
+        trailing: Text(arbProvider[index].toString()),
       );
   });
 }
