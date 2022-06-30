@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:awesome_notification/model/translation.dart';
 import 'package:awesome_notification/screens/navigaton_page.dart';
 import 'package:awesome_notification/state/trans_state.dart';
+import 'package:awesome_notification/state/trans_state.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -19,8 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  StreamController<List<Word>> _streamController = StreamController();
-
+  StreamController<Word> streamController = StreamController.broadcast();
 
   void initState() {
     super.initState();
@@ -110,11 +110,11 @@ class _HomePageState extends State<HomePage> {
     }
 
   }
-  getStreamWord(List<Word> word)async{
+  getStreamWord(Word word)async{
     print(word.toString() + 'Error here');
     print(word);
     print('GET STREAM WORD');
-    _streamController.sink.add(word);
+    streamController.sink.add(word);
 
   }
 
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
         title: Text('Translation App'),
       ),
       body:  StreamBuilder(
-          stream: _streamController.stream,
+          stream: streamController.stream,
           builder: (context, snap){
              if(snap.hasData){
                print(snap.data);
