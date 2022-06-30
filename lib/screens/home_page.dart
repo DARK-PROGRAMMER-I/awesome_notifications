@@ -85,9 +85,9 @@ class _HomePageState extends State<HomePage> {
             (route) => route.isFirst,
       );
     });
-    getWord('1');
-    Timer.periodic(Duration(seconds: 3), (timer) {
-      getWord('1');
+    getWord('hola');
+    Timer.periodic(Duration(seconds: 7200), (timer) {
+      getWord('hola');
     });
   }
   Future<void> getWord(String imei) async{
@@ -109,7 +109,6 @@ class _HomePageState extends State<HomePage> {
   }
   getStreamWord(Word word)async{
     Provider.of<WordState>(context, listen: false).getWord(word);
-    print(word.toString() + 'Error here');
     print('GET STREAM WORD');
     streamController.sink.add(word);
 
@@ -143,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                  print('ERROR SNAP');
                  return CircularProgressIndicator();
               }else{
-               return CircularProgressIndicator();
+               return Center(child: CircularProgressIndicator());
              }
 
             }
@@ -164,9 +163,9 @@ Widget listTile(var word, BuildContext context){
       itemCount: engProvider.length,
       itemBuilder: (context, index){
       return ListTile(
-        title: Text(dateProvider[index].toString()),
-        leading: Text(engProvider[index].toString()),
-        trailing: Text(arbProvider[index].toString()),
+        // title: Text(dateProvider[index].toString()),
+        leading: Text(engProvider[index].toString(), style: TextStyle(fontSize: 20),),
+        trailing: Text(arbProvider[index].toString(), style: TextStyle(fontSize: 20),),
       );
   });
 }
