@@ -19,6 +19,15 @@ void main() {
           channelShowBadge: true,
           channelDescription: '',
         ),
+        NotificationChannel(
+          channelKey: 'scheduled_channel',
+          channelName: 'Scheduled Notifications',
+          defaultColor: Colors.teal,
+          locked: true,
+          importance: NotificationImportance.High,
+          channelDescription: '',
+
+        ),
       ],
       channelGroups: [
         NotificationChannelGroup(

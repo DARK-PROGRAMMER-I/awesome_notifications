@@ -12,7 +12,10 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Scaffold(
+      body: Center(
+        child: Text('Welcome'),
+      ),
 
     );
   }

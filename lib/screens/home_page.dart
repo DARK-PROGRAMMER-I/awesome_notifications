@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:awesome_notification/model/translation.dart';
 import 'package:awesome_notification/screens/navigaton_page.dart';
+import 'package:awesome_notification/screens/notifications.dart';
 import 'package:awesome_notification/state/trans_state.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
@@ -126,16 +127,29 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final engProv = Provider.of<WordState>(context).engWords;
+    final arbProv = Provider.of<WordState>(context).arbWords;
+    final provider = Provider.of<WordState>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Translation App'),
+        leading: IconButton(
+            onPressed: () async {
+
+              // if(engProv.length != 0 && engProv.length != null){
+              //   print();
+              //   provider.getNotified(engProv[engProv.length-1].toString(), arbProv.last.toString());
+              // }else{
+              //   print('Empty List');
+              // }
+
+            },
+            icon: Icon(Icons.notifications_active_rounded)),
       ),
       body:  StreamBuilder(
           stream: streamController.stream,
           builder: (context, snap){
              if(snap.hasData){
-               // print(snap.data);
-               // print('Has DATA');
                  return listTile(snap.data,context);
                }
              if(snap.hasError){
@@ -162,10 +176,20 @@ Widget listTile(var word, BuildContext context){
   ListView.builder(
       itemCount: engProvider.length,
       itemBuilder: (context, index){
-      return ListTile(
-        // title: Text(dateProvider[index].toString()),
-        leading: Text(engProvider[index].toString(), style: TextStyle(fontSize: 20),),
-        trailing: Text(arbProvider[index].toString(), style: TextStyle(fontSize: 20),),
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.topLeft,
+              child: Text(dateProvider[index], style: TextStyle(fontSize: 15),)),
+            ListTile(
+              // title: Text(dateProvider[index].toString()),
+              leading: Text(engProvider[index].toString(), style: TextStyle(fontSize: 20),),
+              trailing: Text(arbProvider[index].toString(), style: TextStyle(fontSize: 20),),
+            ),
+          ],
+        ),
       );
   });
 }

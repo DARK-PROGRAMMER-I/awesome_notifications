@@ -1,21 +1,27 @@
+import 'package:awesome_notification/state/trans_state.dart';
 import 'package:awesome_notification/utils/utils.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 
-Future<void> createPlantFoodNotification() async {
+
+Future<void> createWordNotification(String eng,String arb) async {
+
+  print(eng + '  '+ arb);
   String timezom = await AwesomeNotifications().getLocalTimeZoneIdentifier();
   await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: createUniqueId(),
-        channelKey: 'basic_channel',
-        title:
-        'Buy Plant Food!!!',
-        body: 'Florist at 123 Main St. has 2 in stock',
-        bigPicture: 'asset://assets/notification_map.png',
-        notificationLayout: NotificationLayout.BigPicture,
+        channelKey: 'scheduled_channel',
+        title: '$eng',
+        body: '$arb' ,
       ),
+      // actionButtons: [
+      //   NotificationActionButton(
+      //     key: 'MARK_DONE',
+      //     label: 'Mark Done',
+      //   ),
+      // ],
       schedule: NotificationInterval(
           interval: 60,
-          // allowWhileIdle: true,
           timeZone: timezom,
           repeats: true)
   );
