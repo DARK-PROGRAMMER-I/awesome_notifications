@@ -16,7 +16,7 @@ Future<void> createWordNotification(String eng,String arb) async {
 
       schedule:
       NotificationInterval(
-          interval: 7200,
+          interval: 60,
           // allowWhileIdle: true,
           timeZone: timezom,
           repeats: true),
