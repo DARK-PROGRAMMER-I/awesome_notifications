@@ -64,7 +64,9 @@ class _HomePageState extends State<HomePage> {
     });
 
     AwesomeNotifications().createdStream.listen((notification) {
-      print('Notification Created on ${notification.channelKey}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Notifications initialized...')),
+      );
     });
 
     AwesomeNotifications().actionStream.listen((notification) {
@@ -84,9 +86,9 @@ class _HomePageState extends State<HomePage> {
     });
 
 
-    getWord('hola');
-    Timer.periodic(Duration(seconds: 3600), (timer) {
-      getWord('hola');
+    getWord('ahmad');
+    Timer.periodic(Duration(seconds: 900), (timer) {
+      getWord('ahmad');
     });
 
 
@@ -142,6 +144,9 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.notifications_active_rounded)),
         actions: [
           IconButton(onPressed: ()async{
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Cancelled all notifications...'))
+            );
             cancelScheduledNotifications();
           }, icon: Icon(Icons.notifications_off)),
         ],

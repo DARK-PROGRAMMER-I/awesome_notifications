@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:awesome_notification/state/trans_state.dart';
 import 'package:awesome_notification/utils/utils.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 
@@ -17,11 +14,21 @@ Future<void> createWordNotification(String eng,String arb) async {
         body: '$arb' ,
       ),
 
-      schedule: NotificationCalendar(
-      repeats: false,
-      timeZone: timezom,
-      millisecond: 20
-  )
+      schedule:
+      NotificationInterval(
+          interval: 7200,
+          // allowWhileIdle: true,
+          timeZone: timezom,
+          repeats: true),
+
+  //     NotificationCalendar(
+  //     repeats: true,
+  //     preciseAlarm: true,
+  //     timeZone: timezom,
+  //     millisecond: 20,
+  //     allowWhileIdle: true,
+  //
+  // )
   );
 }
 
