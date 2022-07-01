@@ -86,9 +86,9 @@ class _HomePageState extends State<HomePage> {
     });
 
 
-    getWord('ahmad');
+    getWord('ifr');
     Timer.periodic(Duration(seconds: 900), (timer) {
-      getWord('ahmad');
+      getWord('ifr');
     });
 
 

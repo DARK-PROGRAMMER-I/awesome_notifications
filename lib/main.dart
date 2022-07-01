@@ -23,7 +23,7 @@ void main() {
           channelKey: 'scheduled_channel',
           channelName: 'Scheduled Notifications',
           defaultColor: Colors.teal,
-          locked: true,
+          locked: false,
           importance: NotificationImportance.High,
           channelDescription: '',
 
@@ -49,7 +49,6 @@ class AppWidget extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Colors.teal,
-          // accentColor: Colors.tealAccent,
           colorScheme: ColorScheme.fromSwatch()
               .copyWith(secondary: Colors.tealAccent),
 

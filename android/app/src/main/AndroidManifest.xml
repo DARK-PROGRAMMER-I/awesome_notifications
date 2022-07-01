@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.awesome_notification">
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
    <application
         android:label="awesome_notification"
         android:name="${applicationName}"
@@ -32,3 +34,5 @@
             android:value="2" />
     </application>
 </manifest>
+
+

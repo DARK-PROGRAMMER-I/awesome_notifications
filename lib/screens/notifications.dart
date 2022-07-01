@@ -12,14 +12,20 @@ Future<void> createWordNotification(String eng,String arb) async {
         channelKey: 'scheduled_channel',
         title: '$eng',
         body: '$arb' ,
+        displayOnBackground: true,
+        displayOnForeground: true,
+        locked: false,
+        category: NotificationCategory.Alarm
       ),
 
       schedule:
       NotificationInterval(
-          interval: 60,
-          // allowWhileIdle: true,
+          interval: 3600,
+          allowWhileIdle: true,
           timeZone: timezom,
-          repeats: true),
+          repeats: true,
+          preciseAlarm: true
+      ),
 
   //     NotificationCalendar(
   //     repeats: true,
@@ -41,6 +47,8 @@ Future<void> createBasicNotification(String eng, String arb) async {
         title:
         '$eng',
         body: '$arb',
+
+
       ),
 
 
@@ -48,7 +56,9 @@ Future<void> createBasicNotification(String eng, String arb) async {
           interval: 60,
           // allowWhileIdle: true,
           timeZone: timezom,
-          repeats: true)
+          repeats: true,
+
+      )
   );
 }
 
