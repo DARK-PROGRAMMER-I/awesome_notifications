@@ -115,18 +115,14 @@ class _HomePageState extends State<HomePage> {
   Future<void> getWord(String imei) async{
     var url = Uri.parse('https://ihfath.herokuapp.com/api/v1/Getword/${imei}');
     final response = await http.get(url);
-    List eng = [];
-    List arb = [];
-    List dates = [];
+
     try{
       if(response.statusCode  == 200){
         final databody = json.decode(response.body)['Word'];
         print('Success');
         databody.forEach((element){
           getStreamWord(Word.fromJson(element));
-          eng.add(Word.fromJson(element).eng);
-          arb.add(Word.fromJson(element).arb);
-          dates.add(Word.fromJson(element).date);
+
         });
       }
     }catch(e){
