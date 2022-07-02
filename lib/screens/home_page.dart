@@ -85,17 +85,14 @@ class _HomePageState extends State<HomePage> {
       );
     });
 
-
-    getWord('ifr');
-    Timer.periodic(Duration(seconds: 900), (timer) {
+    getFirstWord('ifr');
+    Timer.periodic(Duration(seconds: 3), (timer) {
       getWord('ifr');
     });
 
 
   }
-
-
-  Future<void> getWord(String imei) async{
+  Future<void> getFirstWord(String imei) async{
     var url = Uri.parse('https://ihfath.herokuapp.com/api/v1/Getword/${imei}');
     final response = await http.get(url);
     try{
@@ -103,7 +100,33 @@ class _HomePageState extends State<HomePage> {
         final databody = json.decode(response.body)['Word'];
         print('Success');
         databody.forEach((element){
+          Provider.of<WordState>(context, listen: false).getWord(
+          Word.fromJson(element)
+          , false);
+        });
+      }
+    }catch(e){
+      print(e);
+      print('fatal Error');
+    }
+
+  }
+
+  Future<void> getWord(String imei) async{
+    var url = Uri.parse('https://ihfath.herokuapp.com/api/v1/Getword/${imei}');
+    final response = await http.get(url);
+    List eng = [];
+    List arb = [];
+    List dates = [];
+    try{
+      if(response.statusCode  == 200){
+        final databody = json.decode(response.body)['Word'];
+        print('Success');
+        databody.forEach((element){
           getStreamWord(Word.fromJson(element));
+          eng.add(Word.fromJson(element).eng);
+          arb.add(Word.fromJson(element).arb);
+          dates.add(Word.fromJson(element).date);
         });
       }
     }catch(e){
@@ -113,7 +136,7 @@ class _HomePageState extends State<HomePage> {
 
   }
   getStreamWord(Word word)async{
-    Provider.of<WordState>(context, listen: false).getWord(word);
+    Provider.of<WordState>(context, listen: false).getWord(word, true);
     print('GET STREAM WORD');
     streamController.sink.add(word);
 
@@ -137,19 +160,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Translation App'),
-        leading: IconButton(
-            onPressed: () async {
-              createWordNotification(engProv.last.toString(), arbProv.last.toString());
-            },
-            icon: Icon(Icons.notifications_active_rounded)),
-        actions: [
-          IconButton(onPressed: ()async{
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Cancelled all notifications...'))
-            );
-            cancelScheduledNotifications();
-          }, icon: Icon(Icons.notifications_off)),
-        ],
       ),
       body:  StreamBuilder(
           stream: streamController.stream,
@@ -161,6 +171,7 @@ class _HomePageState extends State<HomePage> {
                  print('ERROR SNAP');
                  return CircularProgressIndicator();
               }else{
+               print('error here last else');
                return Center(child: CircularProgressIndicator());
              }
 

@@ -15,20 +15,21 @@ Future<void> createWordNotification(String eng,String arb) async {
         displayOnBackground: true,
         displayOnForeground: true,
         locked: false,
-        category: NotificationCategory.Alarm
+        category: NotificationCategory.Recommendation,
+
       ),
 
       schedule:
       NotificationInterval(
-          interval: 3600,
+          interval: 60,
           allowWhileIdle: true,
           timeZone: timezom,
-          repeats: true,
+          repeats: false,
           preciseAlarm: true
       ),
 
   //     NotificationCalendar(
-  //     repeats: true,
+  //     repeats: false,
   //     preciseAlarm: true,
   //     timeZone: timezom,
   //     millisecond: 20,
